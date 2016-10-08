@@ -2,3 +2,5 @@
 #Remount /system rw
 mount -o remount,rw /system;
 mkdir /system/etc/rpkg
+echo "https://ralphsoftoss.github.io/rpkg4android/source/" >> /etc/rpkg/sources
+rpkg-update
