@@ -48,8 +48,8 @@ echo Downloading $1...
 export packageName=$1
 export downloadUrl=$(cat /etc/rpkg/packages/$1)
 echo "$(date) Downloading $1..." >> /etc/rpkg.log
-curl $downloadUrl -o /etc/rptemp/$1.tar.gz
-curl $downloadUrl.post.sh -o /etc/rptemp/$1.tar.gz.post.sh
+curl "$downloadUrl" -o /etc/rptemp/$1.tar.gz
+curl "$downloadUrl.post.sh" -o /etc/rptemp/$1.tar.gz.post.sh
 #PH5: Check if it successfully downloaded
 if [ ! -f "/etc/rptemp/$1.tar.gz" ]; then
 	echo "Error downloading $1, try again or run rpkgupdate!";
