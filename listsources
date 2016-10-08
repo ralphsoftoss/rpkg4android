@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/system/xbin/bash
 #RPKG 1.0
 
 [ ! -e /etc/rpkg ] && echo RPKG is not properly installed! && echo "($(date)) RPKG not installed, exit 1ing..." >> /var/log/rpkg.log && exit 1
