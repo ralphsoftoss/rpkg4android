@@ -1,0 +1,72 @@
+#!/bin/bash
+#RPKG 1.0 for Android
+
+
+#PRE: Check if we have root access
+if [ "$(id -u)" != "0" ]; then
+    echo "$0 must be run by root to work properly!";
+    exit 1;
+fi;
+#Remount /system rw
+mount -o remount,rw /system;
+#Make Temporary Directory
+if [ ! -e /etc/rptemp ]; then
+	mkdir /etc/rptemp;
+fi;
+mount -t tmpfs tmpfs /etc/rptemp;
+#PRE: Archive old logs
+if [ -f /etc/rpkg.log ]; then
+	mv /etc/rpkg.log /etc/rpkg.log.old
+fi;
+
+#Start logging service
+echo "$(date) RPKGINSTALL logging started!" >> /etc/rpkg.log;
+
+#PH1: Check if a package is specified
+if [[ "$1" == "" ]]; then
+	echo "rpkginstall Usage:";
+	echo "";
+	echo "$0 <package_name>";
+	exit 1;
+fi;
+
+#PH2: Check if all prerequisites are met
+echo "($(date)) ======[Prerequisites check]======" >> /etc/rpkg.log
+[ ! -e /etc/rpkg ] && echo RPKG is not properly installed! && echo "($(date)) RPKG not installed, exit 1ing..." >> /etc/rpkg.log && exit 1
+[ ! -f /etc/rpkg/sources ] && echo No sources have been added! Please add some before installing anything! && echo "($(date)) RPKG cannot find /etc/rpkg/sources, exiting..." >> /etc/rpkg.log && exit 1
+[ ! -e /etc/rpkg/packages ] && echo Packages have not been updated, please run rpkgupdate! && echo "($(date)) No packages present in /etc/rpkg/packages, user must manually update packages, exiting..." >> /etc/rpkg.log && exit 1
+#PH3: Look up package metadata, and if it doesn't exist, exit.
+echo "Looking up package $1...";
+echo "$(date) Checking package $1..." >> /etc/rpkg.log
+if [ ! -f "/etc/rpkg/packages/$1" ]; then
+	echo "Package $1 not found!";
+	echo "$(date) Couldn't find package $1!" >> /etc/rpkg.log
+	exit 1;
+fi;
+#PH4: Download the package and post install script
+echo Downloading $1...
+export packageName=$1
+export downloadUrl=$(cat /etc/rpkg/packages/$1)
+echo "$(date) Downloading $1..." >> /etc/rpkg.log
+wget $downloadUrl -O /etc/rptemp/$1.tar.gz -o /etc/rpkg_get.log
+wget $downloadUrl.post.sh -O /etc/rptemp/$1.tar.gz.post.sh -o /etc/rpkg_get.log
+#PH5: Check if it successfully downloaded
+if [ ! -f "/etc/rptemp/$1.tar.gz" ]; then
+	echo "Error downloading $1, try again or run rpkgupdate!";
+	echo "$(date) Error downloading $1, try again or run rpkgupdate!" >> /etc/rpkg.log;
+	exit 1;
+fi;
+if [ ! -f "/etc/rptemp/$1.tar.gz.post.sh" ]; then
+	echo "Error downloading $1, try again or run rpkgupdate!";
+	echo "$(date) Error downloading $1, try again or run rpkgupdate!" >> /etc/rpkg.log;
+	exit 1;
+fi;
+if [ -f "/etc/rptemp/$1.tar.gz" ]; then
+	echo "$1 successfully downloaded, installing...";
+	echo "$(date) $1 successfully downloaded, installing..." >> /etc/rpkg.log;
+fi;
+#PH6: Install it
+tar --overwrite -xf /etc/rptemp/$1.tar.gz -C /
+chmod 777 /etc/rptemp/$1.tar.gz.post.sh
+/etc/rptemp/$1.tar.gz.post.sh
+echo "Finished Installing $1";

@@ -1,0 +1,32 @@
+#!/bin/bash
+#RPKG 1.0
+
+#PRE: Check if we have root access
+if [ "$(id -u)" != "0" ]; then
+    echo "$0 must be run by root to work properly!";
+    exit 1;
+fi;
+
+#Remount /system rw
+mount -o remount,rw /system;
+#Make Temporary Directory
+if [ ! -e /etc/rptemp ]; then
+	mkdir /etc/rptemp;
+fi;
+mount -t tmpfs tmpfs /etc/rptemp;
+
+#PRE: Check if all prerequisites are met
+echo "($(date)) ======[Prerequisites check]======" >> /etc/rpkg.log
+[ ! -e /etc/rpkg ] && echo RPKG is not properly installed! && echo "($(date)) RPKG not installed, exit 1ing..." >> /etc/rpkg.log && exit 1
+[ ! -e /etc/rpkg/packages ] && mkdir /etc/rpkg/packages
+
+#PH1: Check if user inputs any argument, if not, exit
+if [[ "$1" == "" ]]; then
+	echo "addsource Usage:";
+	echo "";
+	echo "$0 <url>";
+	exit 1;
+fi;
+
+echo "$1" >> /etc/rpkg/sources;
+echo "Source $1 added successfully";

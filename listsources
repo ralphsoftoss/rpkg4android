@@ -1,0 +1,6 @@
+#!/bin/bash
+#RPKG 1.0
+
+[ ! -e /etc/rpkg ] && echo RPKG is not properly installed! && echo "($(date)) RPKG not installed, exit 1ing..." >> /var/log/rpkg.log && exit 1
+[ ! -e /etc/rpkg/packages ] && mkdir /etc/rpkg/packages
+dialog --textbox /etc/rpkg/sources 25 80
