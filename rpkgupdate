@@ -22,9 +22,9 @@ echo "($(date)) ======[Prerequisites check]======" >> /etc/rpkg.log
 
 #PH1: Iterate through all sources and download all package files
 while read srcline; do
-	wget $srcline/pkinfo -O /etc/rptemp/packages -o /etc/rptemp/pkgtrans.bak
+	curl $srcline/pkinfo -o /etc/rptemp/packages
 	cd /etc/rpkg/packages
 	while read packageline; do
-		wget $packageline -o /etc/rptemp/pkgtrans00.bak
+		curl $packageline -o /etc/rptemp/pkgtrans -O
 	done <"/etc/rptemp/packages";
 done <"/etc/rpkg/sources";
