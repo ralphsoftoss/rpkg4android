@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/system/xbin/bash
 #Remount /system rw
 mount -o remount,rw /system;
 mkdir /system/etc/rpkg
