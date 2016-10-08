@@ -19,8 +19,34 @@
     </section>
 
     <section class="main-content">
-      <h2>TODO: Add setup tutorial</h2>
-
+      <h2>Setting it up</h2>
+      <p>
+        Prerequisites:<br>
+          - BASH support, installed in /system/xbin<br>
+          - Root Access (your device must be rooted)<br>
+          - A custom rom with permission fixing (might be needed for sources that don't specify the right permission settings)
+<br>
+          - A file manager to copy rpkg4android to /system/xbin, FX File Explorer is a good one. It is available from Google Play.<br>
+          - Up-to-date busybox<br>
+          - A terminal emulator, you can get one from the Play Store.<br>
+        <br>
+        
+      </p>
+      <h3>1. Installing RPKG4ANDROID</h3>
+      <p>
+        First, download a zipball or tarball by clicking one of the buttons above.<br>
+        Then, unpack the archive to any directory you wish.<br>
+        Only copy "firstrun", "rpkgupdate", "rpkginstall", "addsource" and "listsources" to /system/xbin. You may need to remount /system read-write.<br>
+        Now, open a root shell and run "firstrun". It will not run properly. You'll need to change file permissions.<br>
+        Run the following commands to fix file permissions:<br>
+        chmod 777 /system/xbin/*<br>
+      </p>
+      <h3>2. Add default repo</h3>
+      <p>
+        Run "firstrun" in your root shell. It should update and add the default repo.<br>
+        That is pretty much it for the default repo.<br>
+      </p>
+      We are going to add more here!
     </section>
 
   
