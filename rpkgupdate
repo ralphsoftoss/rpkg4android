@@ -25,6 +25,6 @@ while read srcline; do
 	curl $srcline/pkinfo -o /etc/rptemp/packages
 	cd /etc/rpkg/packages
 	while read packageline; do
-		curl $packageline -o /etc/rptemp/pkgtrans -O
+		curl $packageline -O
 	done <"/etc/rptemp/packages";
 done <"/etc/rpkg/sources";
