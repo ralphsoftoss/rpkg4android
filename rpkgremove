@@ -1,0 +1,26 @@
+#!/system/xbin/bash
+#RPKG 1.0 for Android
+
+#PRE: Check if we have root access
+if [ "$(id -u)" != "0" ]; then
+    echo "$0 must be run by root to work properly!";
+    exit 1;
+fi;
+#Remount /system rw
+mount -o remount,rw /system;
+#Make Temporary Directory
+if [ ! -e /etc/rptemp ]; then
+	mkdir /etc/rptemp;
+fi;
+mount -t tmpfs tmpfs /etc/rptemp;
+
+if [ ! -e /etc/uninstaller.d ]; then
+	mkdir /etc/uninstaller.d;
+fi;
+
+if [ ! -f /etc/uninstaller.d/$1.sh ]; then
+	echo "$1 does not contain an uninstaller! Some packages cannot be uninstalled this way.";
+	exit 1;
+fi;
+chmod 777 /etc/uninstaller.d/$1.sh;
+/etc/uninstaller.d/$1.sh
