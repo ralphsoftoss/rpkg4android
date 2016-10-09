@@ -1,0 +1,3 @@
+#!/system/xbin/bash
+echo Installing FSUTILS for Android...
+echo Done!
