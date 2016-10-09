@@ -1,0 +1,8 @@
+#!/system/bin/sh
+#Simple Root Checker
+if [ -f /system/xbin/su ]; then
+    echo "You are rooted.";
+fi;
+if [ ! -f /system/xbin/su ]; then
+    echo "You are not rooted.";
+fi;
