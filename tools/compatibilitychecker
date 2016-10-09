@@ -1,2 +1,13 @@
 #!/system/bin/sh
-#Not finished yet
+if [ ! -f /system/xbin/busybox ]; then
+    echo "RPKG cannot be used on this device, busybox isn't installed! Look on the play store for a busybox installer.";
+    exit;
+fi;
+
+if [ ! -f /system/xbin/bash ]; then
+    echo "RPKG cannot be used on this device, bash isn't installed! Look on the play store for a bash installer.";
+fi;
+
+if [ ! -f /system/bin/curl ]; then
+    echo "RPKG cannot be used on this device, curl isn't installed! Look on the play store for a curl installer.";
+fi;
